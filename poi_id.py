@@ -82,7 +82,7 @@ parameters = {'criterion':('gini', 'entropy'),
               'random_state':[0]}
 dt = DecisionTreeClassifier()
 clf = GridSearchCV(dt, parameters)
-#clf.fit(features_train,labels_train)
+clf.fit(features_train,labels_train)
 # Accuracy: 0.83593       Precision: 0.36189      Recall: 0.30200
 #'''
 
@@ -104,7 +104,7 @@ features_train, features_test, labels_train, labels_test = \
 
 # 交叉验证
 
-'''
+#'''
 from sklearn.cross_validation import StratifiedShuffleSplit
 
 cv = StratifiedShuffleSplit(labels, 100, random_state = 42)
@@ -127,8 +127,8 @@ pred = clf.predict(features_test)
 acc = accuracy_score(labels_test,pred)
 ave = precision_score(labels_test,pred)
 rec = recall_score(labels_test,pred)
-
-'''
+print acc,ave,rec
+#'''
 
 ### Task 6: Dump your classifier, dataset, and features_list so anyone can
 ### check your results. You do not need to change anything below, but make sure
