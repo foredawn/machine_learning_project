@@ -74,6 +74,21 @@ clf = KNeighborsClassifier(weights='distance')
 
 ## try decisionTreeClassifier
 #'''
+from sklearn.cross_validation import StratifiedShuffleSplit
+
+cv = StratifiedShuffleSplit(labels, 10, random_state = 42)
+for train_idx, test_idx in cv:
+    features_train = []
+    features_test  = []
+    labels_train   = []
+    labels_test    = []
+    for ii in train_idx:
+        features_train.append( features[ii] )
+        labels_train.append( labels[ii] )
+    for jj in test_idx:
+        features_test.append( features[jj] )
+        labels_test.append( labels[jj] )
+
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.grid_search import GridSearchCV
 parameters = {'criterion':('gini', 'entropy'),
@@ -83,7 +98,8 @@ parameters = {'criterion':('gini', 'entropy'),
 dt = DecisionTreeClassifier()
 clf = GridSearchCV(dt, parameters)
 clf.fit(features_train,labels_train)
-# Accuracy: 0.83593       Precision: 0.36189      Recall: 0.30200
+pred = clf.predict(features_test)
+
 #'''
 
 
@@ -104,31 +120,17 @@ features_train, features_test, labels_train, labels_test = \
 
 # 交叉验证
 
-#'''
-from sklearn.cross_validation import StratifiedShuffleSplit
-
-cv = StratifiedShuffleSplit(labels, 100, random_state = 42)
-for train_idx, test_idx in cv:
-    features_train = []
-    features_test  = []
-    labels_train   = []
-    labels_test    = []
-    for ii in train_idx:
-        features_train.append( features[ii] )
-        labels_train.append( labels[ii] )
-    for jj in test_idx:
-        features_test.append( features[jj] )
-        labels_test.append( labels[jj] )
-        
+'''
+代码见上一部分
+'''
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
-pred = clf.predict(features_test)
 acc = accuracy_score(labels_test,pred)
 ave = precision_score(labels_test,pred)
 rec = recall_score(labels_test,pred)
 print acc,ave,rec
-#'''
+
 
 ### Task 6: Dump your classifier, dataset, and features_list so anyone can
 ### check your results. You do not need to change anything below, but make sure
